@@ -24,7 +24,7 @@
   const pos = v => (v+40)/40*100;
   if($('#c1c')) Object.entries(R.effects).forEach(([k,v])=>{ const main = k.startsWith('M2 '); const tr=el('div',{class:'dot-track'}); if(main){ tr.append(el('div',{class:'ci',style:'left:'+pos(bs.eff_hi)+'%;width:'+(pos(bs.eff_lo)-pos(bs.eff_hi))+'%'})); } tr.append(el('div',{class:'dot'+(main?' main':''),style:'left:'+pos(v)+'%'})); $('#c1c').append(el('div',{class:'dot-row',title:(labels[k]||k)+': '+v+'%'}, el('div',{text:labels[k]||k, style: main?'font-weight:700':''}), tr, el('div',{class:'val',text:Math.round(v)+'%'}))); });
   const qn={1:'Lowest income',2:'Lower',3:'Middle',4:'Higher',5:'Highest income'};
-  bars($('#c2'), [1,2,3,4,5].map(k=>({label:qn[k], v:R.closure_inc[k].r7, vt:fmt(R.closure_inc[k].r7,1)+'%', dim:true})), {max:110, ref:100});
+  bars($('#c2'), [1,2,3,4,5].map(k=>({label:qn[k], sub:fmt(R.closure_inc[k].p7,1)+'% closed within 7 days', v:R.closure_inc[k].r7, vt:fmt(R.closure_inc[k].r7,1), dim:true})), {max:110, ref:100});
   bars($('#c3'), [1,2,3,4,5].map(k=>({label:qn[k], v:R.app_inc[k], vt:fmt(R.app_inc[k],1)+'%', dim:k!==1})).concat([4,1].map(k=>({label:(k===4?'Most':'Fewest')+' non-English speakers', sub:'language group', v:R.app_ne[k], vt:fmt(R.app_ne[k],1)+'%', dim:k!==4}))), {max:30});
 
   if(!$('#card')) return;
