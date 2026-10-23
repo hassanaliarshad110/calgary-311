@@ -84,10 +84,10 @@
 
   const dark = () => document.documentElement.dataset.theme==='dark' || (document.documentElement.dataset.theme!=='light' && matchMedia('(prefers-color-scheme: dark)').matches);
   const tpane = map.createPane('tlabels'); tpane.style.zIndex='405'; tpane.style.pointerEvents='none';
-  const tu = kind => 'https://{s}.basemaps.cartocdn.com/'+(dark()?'dark_':'light_')+kind+'/{z}/{x}/{y}{r}.png';
-  const ATTR = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
-  const tiles = L.tileLayer(tu('nolabels'), {subdomains:'abcd', maxZoom:20, attribution:ATTR});
-  const tlab = L.tileLayer(tu('only_labels'), {subdomains:'abcd', maxZoom:20, pane:'tlabels'});
+  const tu = kind => 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_'+(dark()?'Dark':'Light')+'_Gray_'+kind+'/MapServer/tile/{z}/{y}/{x}';
+  const ATTR = 'Basemap &copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors';
+  const tiles = L.tileLayer(tu('Base'), {maxNativeZoom:16, maxZoom:20, attribution:ATTR});
+  const tlab = L.tileLayer(tu('Reference'), {maxNativeZoom:16, maxZoom:20, pane:'tlabels'});
   const streets = document.getElementById('streets');
   var streetsOn = false;
   function setStreets(on){ streetsOn = on;
@@ -95,7 +95,7 @@
     else { map.removeLayer(tiles); map.removeLayer(tlab); water.addTo(map); roadLayer.addTo(map); zoomed(); }
     MD.comms.forEach(c=>layers[c.c].setStyle({fillOpacity: on?0.5:0.88})); }
   if(streets){ streets.addEventListener('change', ()=>setStreets(streets.checked)); }
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ()=>{ tiles.setUrl(tu('nolabels')); tlab.setUrl(tu('only_labels')); });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ()=>{ tiles.setUrl(tu('Base')); tlab.setUrl(tu('Reference')); });
   map.fitBounds(B,{padding:[8,8]});
 
   // legend

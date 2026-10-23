@@ -7,5 +7,5 @@ Live site: https://hassanaliarshad110.github.io/calgary-311/
 - `index.html` overview, `findings.html`, `map.html` (community map), `communities.html` (profiles and table), `method.html` (method and downloads)
 - `downloads/` methodology PDF, community indicators CSV, and the full study package with source data and code
 
-Data: City of Calgary Open Data, Open Government Licence – City of Calgary. Basemap: © OpenStreetMap contributors © CARTO.
+Data: City of Calgary Open Data, Open Government Licence – City of Calgary. Basemap: Esri World Gray Canvas (© Esri, HERE, Garmin, © OpenStreetMap contributors).
 Not affiliated with The City of Calgary.
