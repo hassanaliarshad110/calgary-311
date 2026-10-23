@@ -218,6 +218,16 @@ main{padding-block:8px 64px}
 .basemap input{accent-color:var(--accent);width:16px;height:16px}
 @media (max-width:880px){ .mapsec.full .mapgrid{height:auto;min-height:0} }
 
+.gp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gap,.prop{border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.gap{background:var(--flag-soft)}
+.prop{background:var(--accent-soft)}
+.gp p{font-size:.94rem;line-height:1.5}
+.tag{font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700}
+.gap .tag{color:var(--flag)}
+.prop .tag{color:var(--accent)}
+.rec{scroll-margin-top:84px}
+@media (max-width:700px){ .gp{grid-template-columns:1fr} }
 .chiprow{display:flex;flex-wrap:wrap;gap:6px}
 .chipnav{font-size:.86rem;font-weight:600;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:5px 12px;text-decoration:none}
 .chipnav:hover{text-decoration:underline}
