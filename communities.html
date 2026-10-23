@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Communities · Who Calgary's 311 Hears</title>
+<meta name="description" content="Profiles of 195 Calgary communities with 52 indicators each, and a sortable table of all communities.">
+<meta property="og:title" content="Communities · Who Calgary's 311 Hears">
+<meta property="og:description" content="Profiles of 195 Calgary communities with 52 indicators each, and a sortable table of all communities.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hassanaliarshad110.github.io/calgary-311/communities.html">
+<meta property="og:image" content="https://hassanaliarshad110.github.io/calgary-311/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f5f8c'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='26' font-weight='700' text-anchor='middle' fill='white'%3E311%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<nav class="nav" aria-label="Site"><div class="in"><a class="brand" href="index.html">Who Calgary's 311 Hears</a><ul><li><a class="lk" href="index.html">Overview</a></li><li><a class="lk" href="map.html">Map</a></li><li><a class="lk" href="findings.html">Findings</a></li><li><a class="lk" href="communities.html" aria-current="page">Communities</a></li><li><a class="lk" href="method.html">Method & data</a></li></ul></div></nav>
+<main>
+<div class="wrap" style="margin-top:28px">
+  <header style="padding-top:0"><span class="label">Communities</span><h1 style="font-size:clamp(1.8rem,5vw,2.6rem)">Community profiles</h1></header>
+  <section class="stack">
+    <h2>Community profile</h2>
+    <p class="note">52 indicators for each community, compared with Calgary as a whole: the figure for all 195 study communities together (for residents, the average community size). The marker shows where the community ranks among the 195 communities, from lowest (left) to highest (right).</p>
+    <div class="explorer">
+      <div class="searchrow"><label for="cq" hidden>Community</label><input id="cq" list="clist" placeholder="Type a community, e.g. Martindale" autocomplete="off"></div>
+      <datalist id="clist"></datalist>
+      <div class="sugg" id="sugg"></div>
+      <div class="card" id="card"></div>
+    </div>
+  </section>
+  <section class="stack">
+    <h2>All communities</h2>
+    <p class="note">Sort by any column. Columns marked (area) are measured for areas that group several neighbouring communities. The reporting gap compares a community's infrastructure reports with what's typical for communities of the same age, distance from downtown, income and share of renters.</p>
+    <div class="searchrow">
+      <label for="tq" hidden>Filter</label><input id="tq" placeholder="Filter by name or quadrant (NE, NW, SE, SW)" autocomplete="off">
+      <a class="btn primary" href="downloads/calgary-311-community-indicators.csv" download style="text-decoration:none">Download all data (CSV)</a>
+    </div>
+    <div class="tablewrap" style="max-height:560px"><table id="tbl"></table></div>
+  </section>
+</div>
+</main>
+<footer class="foot"><div class="in">
+<span>An independent study. Not affiliated with The City of Calgary.</span>
+<span>Data: <a href="https://data.calgary.ca/" target="_blank" rel="noopener">City of Calgary Open Data</a>, Open Government Licence – City of Calgary.</span>
+<span><a href="method.html">Method and downloads</a> · <a href="https://github.com/hassanaliarshad110/calgary-311/issues" target="_blank" rel="noopener">Report a correction</a></span>
+</div></footer>
+<div class="toast" id="toast" role="status" hidden></div>
+<script src="assets/report.js"></script>
+</body>
+</html>

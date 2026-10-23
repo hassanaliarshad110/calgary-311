@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Findings · Who Calgary's 311 Hears</title>
+<meta name="description" content="Three findings from an independent study of Calgary 311 requests, October 2024 to September 2026.">
+<meta property="og:title" content="Findings · Who Calgary's 311 Hears">
+<meta property="og:description" content="Three findings from an independent study of Calgary 311 requests, October 2024 to September 2026.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hassanaliarshad110.github.io/calgary-311/findings.html">
+<meta property="og:image" content="https://hassanaliarshad110.github.io/calgary-311/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f5f8c'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='26' font-weight='700' text-anchor='middle' fill='white'%3E311%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<nav class="nav" aria-label="Site"><div class="in"><a class="brand" href="index.html">Who Calgary's 311 Hears</a><ul><li><a class="lk" href="index.html">Overview</a></li><li><a class="lk" href="map.html">Map</a></li><li><a class="lk" href="findings.html" aria-current="page">Findings</a></li><li><a class="lk" href="communities.html">Communities</a></li><li><a class="lk" href="method.html">Method & data</a></li></ul></div></nav>
+<main>
+<div class="wrap" style="margin-top:28px">
+  <header style="padding-top:0"><span class="label">Findings</span><h1 style="font-size:clamp(1.8rem,5vw,2.6rem)">What the 311 data shows</h1><p class="meta" id="meta"></p></header>
+  <section class="finding" id="f1">
+    <span class="fnum">Finding 1</span>
+    <h2>Communities where more residents don't speak English report far fewer problems</h2>
+    <p>We grouped communities into four equal groups by the share of residents with no knowledge of English (2021 Census), then counted reports about roads, sidewalks, streetlights, water, sewers, parks and trees per 1,000 residents. These include snow and ice, debris and park garbage requests. Counting only defects gives the same result.</p>
+    <div class="chart" role="figure" aria-label="Infrastructure reports per 1,000 residents by non-English share">
+      <div class="chart-title">Infrastructure reports per 1,000 residents per year</div>
+      <div class="bars" id="c1"></div>
+    </div>
+    <p>Part of that raw gap comes from other differences: older neighbourhoods have older pipes and sidewalks, and newer suburbs have fewer problems. Comparing communities first settled in the same era, the gap remains. Those groups still differ in income and location, which the estimate below accounts for.</p>
+    <div class="chart" role="figure" aria-label="Like-for-like comparison among communities settled 1975 to 2000">
+      <div class="chart-title">Like for like: 63 communities first settled 1975–2000</div>
+      <div class="bars" id="c1b"></div>
+    </div>
+    <div class="chart" role="figure" aria-label="Estimated reporting gap across 14 statistical models">
+      <div class="chart-title">Every way we measured it shows fewer reports</div>
+      <p class="note">Estimated difference in infrastructure reports for a community where 5% of residents don't speak English versus 1%, under 14 different models. The darker dot is the main model, with its 95% range from a bootstrap that resamples whole areas.</p>
+      <div class="dots" id="c1c"></div>
+      <div class="axis"><div></div><div><span>−40%</span><span>−20%</span><span>0%</span></div><div></div></div>
+    </div>
+    <div class="callout"><b>Best estimate: about 23% fewer reports</b> (95% range 9% to 33%) after accounting for income, renters, community age and distance from downtown. The pattern holds outside northeast Calgary, for roads, water and parks separately, in each year studied, and when communities are linked to areas using the City's own community lists (about 20% fewer).</div>
+    <p class="note">One caution: communities with more non-English speakers also tend to have more visible-minority residents and recent newcomers. The data can't separate these, so this shows who 311 hears less from, not exactly why.</p>
+  </section>
+
+  <section class="finding" id="f2">
+    <span class="fnum">Finding 2</span>
+    <h2>Once a problem is reported, the City responds equally fast everywhere</h2>
+    <p>We compared each community's requests with the citywide speed for the same type of request in the same year. Across income groups and language groups, the share closed within 7 days is within 1.5% of expected, and within 0.6% at 30 days. Long waits of more than 90 days are rare (about 2% of requests) and vary more, from 93% to 107% of expected across income groups, with no consistent direction.</p>
+    <div class="chart" role="figure" aria-label="Requests closed within 7 days compared with expected, by income group">
+      <div class="chart-title">Requests closed within 7 days, compared with the citywide expectation (100%)</div>
+      <div class="bars" id="c2"></div>
+    </div>
+    <p>One caution: "closed" in 311 records means the City closed the request, which doesn't always mean the problem was fixed.</p>
+  </section>
+
+  <section class="finding" id="f3">
+    <span class="fnum">Finding 3</span>
+    <h2>A smaller share of requests come through the 311 app in lower-income and non-English-speaking areas</h2>
+    <div class="chart" role="figure" aria-label="Share of 311 requests made through the app">
+      <div class="chart-title">Share of all 311 requests made through the app</div>
+      <div class="bars" id="c3"></div>
+    </div>
+    <p>The City says it will add more languages to the 311 app in 2026. These communities are where that matters most.</p>
+
+  <p class="note">Sources: <a href="https://data.calgary.ca/Services-and-Amenities/311-Service-Requests/iahh-g8bj" target="_blank" rel="noopener">311 Service Requests</a> · <a href="https://data.calgary.ca/" target="_blank" rel="noopener">Calgary Equity Index, 2021 Census by community, Current Year Property Assessments, Building Permits, Historical Community Populations (City of Calgary open data)</a> · <a href="https://calgary.ca/cfod/csc/about-311-calgary-app.html" target="_blank" rel="noopener">311 Calgary app</a> · Related research: <a href="https://arxiv.org/abs/1710.02452" target="_blank" rel="noopener">Kontokosta et al. (2017), New York City</a>. Not affiliated with The City of Calgary.</p>
+</div>
+</main>
+<footer class="foot"><div class="in">
+<span>An independent study. Not affiliated with The City of Calgary.</span>
+<span>Data: <a href="https://data.calgary.ca/" target="_blank" rel="noopener">City of Calgary Open Data</a>, Open Government Licence – City of Calgary.</span>
+<span><a href="method.html">Method and downloads</a> · <a href="https://github.com/hassanaliarshad110/calgary-311/issues" target="_blank" rel="noopener">Report a correction</a></span>
+</div></footer>
+<div class="toast" id="toast" role="status" hidden></div>
+<script src="assets/report.js"></script>
+</body>
+</html>
