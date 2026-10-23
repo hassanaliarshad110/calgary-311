@@ -1,5 +1,5 @@
 (async function(){
-  const D = await (await fetch('assets/data.json')).json(), R = D.R;
+  const D = await (await fetch('assets/data.json?v=cde582a8')).json(), R = D.R;
   const $ = s => document.querySelector(s);
   const el = (t,a,...k)=>{const n=document.createElement(t); if(a) for(const x in a){ if(x==='class') n.className=a[x]; else if(x==='text') n.textContent=a[x]; else if(x==='style') n.style.cssText=a[x]; else n.setAttribute(x,a[x]); } for(const c of k){ if(c==null) continue; n.append(c.nodeType?c:document.createTextNode(c)); } return n; };
   const fmt = (n,d=0) => n==null ? '–' : Number(n).toLocaleString('en-CA',{minimumFractionDigits:d,maximumFractionDigits:d});
