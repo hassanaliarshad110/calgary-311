@@ -1,5 +1,5 @@
 (async function(){
-  const D = await (await fetch('assets/data.json?v=6580a389')).json(), R = D.R;
+  const D = await (await fetch('assets/data.json?v=aa032670')).json(), R = D.R;
   const $ = s => document.querySelector(s);
   const el = (t,a,...k)=>{const n=document.createElement(t); if(a) for(const x in a){ if(x==='class') n.className=a[x]; else if(x==='text') n.textContent=a[x]; else if(x==='style') n.style.cssText=a[x]; else n.setAttribute(x,a[x]); } for(const c of k){ if(c==null) continue; n.append(c.nodeType?c:document.createTextNode(c)); } return n; };
   const fmt = (n,d=0) => n==null ? '–' : Number(n).toLocaleString('en-CA',{minimumFractionDigits:d,maximumFractionDigits:d});
@@ -41,8 +41,8 @@
     const gapTxt = c.g ? ['','Reporting gap not reliable here'] : gap==null ? null : gap < -25 ? ['lo','Reports much less than similar communities'] : gap < -10 ? ['lo','Reports less than similar communities'] : gap > 10 ? ['ok','Reports more than similar communities'] : ['ok','Reports about as expected'];
     card.append(el('h3',{text:c.n}), el('div',{class:'chips'}, el('span',{class:'pill',text:c.q+' Calgary'}), c.b?el('span',{class:'pill',text:'First reached 500 residents: '+(c.b===1968?'1968 or earlier':c.b)}):null, gapTxt?el('span',{class:'pill '+gapTxt[0],text:gapTxt[1]}):null));
     if(c.g||c.a){ const a=c.a, hi=c.v[KI.infra_rate]; const adjTxt = a ? ' Adjusted for growth (about '+fmt(a.pop)+' residents during the study), infrastructure reports are about '+fmt(a.rate,1)+' per 1,000 residents a year'+(a.gap!=null?', '+show(IND[KI.report_gap_pct],a.gap)+' compared with similar communities':'')+', against '+fmt(hi,1)+' using 2021 population.' : '';
-      if(c.g) card.append(el('p',{class:'note'}, el('b',{text:'Grown a lot since 2021. '}), 'This community has about '+fmt(c.g,1)+' times as many homes lived in as on Census day 2021, but the latest population count by community is from the 2021 Census. Its per-resident rates are overstated, so its reporting gap is not shown.'+adjTxt));
-      else card.append(el('p',{class:'note'}, el('b',{text:'Grown since 2021. '}), 'This community has about '+Math.round((a.hg-1)*100)+'% more homes lived in than on Census day 2021, so its per-resident rates are somewhat overstated.'+adjTxt));
+      if(c.g) card.append(el('p',{class:'note'}, el('b',{text:'Grown a lot since 2021. '}), 'This community has an estimated '+fmt(c.g,1)+' times as many residents as in 2021 (from homes built and rental units since then), but the latest population count by community is from the 2021 Census. Its per-resident rates are overstated, so its reporting gap is not shown.'+adjTxt));
+      else card.append(el('p',{class:'note'}, el('b',{text:'Grown since 2021. '}), 'This community has an estimated '+Math.round((a.hg-1)*100)+'% more residents than in 2021, so its per-resident rates are somewhat overstated.'+adjTxt));
       if(c.w==='5') card.append(el('p',{class:'note'}, el('a',{href:'ward5.html',text:'How Ward 5 was adjusted for growth →'}))); }
     if(c.top.length) card.append(el('p',null, el('b',{text:'Most reported here: '}), c.top.map(t=>t[0]+' ('+fmt(t[1])+')').join(', ')));
     if(c.s){ const SCD=Object.fromEntries(D.comms.map(x=>[x.c,x])); const box=el('div',{class:'grp peers'}, el('h4',{text:'Most similar communities'}));

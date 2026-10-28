@@ -1,7 +1,7 @@
 // ---------- Community map ----------
 (async function(){
   if(!window.L){ const m=document.getElementById('map'); if(m) m.textContent='The map library could not load. Check your connection and reload the page.'; return; }
-  const [MD, D] = await Promise.all([fetch('assets/mapdata.json?v=79d518e9').then(r=>r.json()), fetch('assets/data.json?v=6580a389').then(r=>r.json())]);
+  const [MD, D] = await Promise.all([fetch('assets/mapdata.json?v=79d518e9').then(r=>r.json()), fetch('assets/data.json?v=aa032670').then(r=>r.json())]);
   const IND = D.ind, KI = Object.fromEntries(IND.map((x,i)=>[x.k,i]));
   const SC = Object.fromEntries(D.comms.map(c=>[c.c,c]));      // study communities by code
   const $ = s => document.querySelector(s);
