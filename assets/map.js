@@ -1,7 +1,7 @@
 // ---------- Community map ----------
 (async function(){
   if(!window.L){ const m=document.getElementById('map'); if(m) m.textContent='The map library could not load. Check your connection and reload the page.'; return; }
-  const [MD, D] = await Promise.all([fetch('assets/mapdata.json?v=79d518e9').then(r=>r.json()), fetch('assets/data.json?v=cde582a8').then(r=>r.json())]);
+  const [MD, D] = await Promise.all([fetch('assets/mapdata.json?v=79d518e9').then(r=>r.json()), fetch('assets/data.json?v=74a64fda').then(r=>r.json())]);
   const IND = D.ind, KI = Object.fromEntries(IND.map((x,i)=>[x.k,i]));
   const SC = Object.fromEntries(D.comms.map(c=>[c.c,c]));      // study communities by code
   const $ = s => document.querySelector(s);
@@ -108,7 +108,7 @@
     const sw = el('div',{class:'sw',style:'--n:5'}); PAL.forEach(c=>sw.append(el('i',{style:'background:'+c}))); lg.append(sw);
     if(metric.div) lg.append(el('div',{class:'lb'}, el('span',{text:'Reports less'}), el('span',{text:'as expected'}), el('span',{text:'more'})));
     else { const f=v=>show(metric.k,v); lg.append(el('div',{class:'lb'}, el('span',{text:'< '+f(BR[0])}), el('span',{text:f(BR[1])+'–'+f(BR[2])}), el('span',{text:'> '+f(BR[3])}))); }
-    lg.append(el('div',{class:'nd'}, el('i'), 'Not in study: industrial, parks, under 500 residents or built after 2021'));
+    lg.append(el('div',{class:'nd'}, el('i'), metric.k==='report_gap_pct' ? 'No gap shown: not in study, or grown a lot since 2021' : 'Not in study: industrial, parks, under 500 residents or built after 2021'));
   }
   sel.addEventListener('change',()=>{ metric=METRICS[+sel.value]; BR=breaks(metric); styleAll(); if(cur) panel(cur); });
 
@@ -135,7 +135,7 @@
 
   // ----- side panel -----
   const P = $('#mpanel');
-  function hover(c){ const h=$('#mhover'); if(h) h.textContent = c ? c.n + (SC[c.c] ? ' · ' + show(metric.k, val(c.c,metric.k)) : ' · not in study') : 'Hover or tap a community'; }
+  function hover(c){ const h=$('#mhover'); if(h) h.textContent = c ? c.n + (SC[c.c] ? ' · ' + ((metric.k==='report_gap_pct'&&SC[c.c].g) ? 'gap not reliable (grown since 2021)' : show(metric.k, val(c.c,metric.k))) : ' · not in study') : 'Hover or tap a community'; }
   function km(d){ return d<1 ? fmt(d*1000,0)+' m' : fmt(d,1)+' km'; }
   function panel(code){
     const c=commByCode[code], s=SC[code]; P.textContent='';
@@ -144,8 +144,9 @@
       el('div',{class:'sub',text:[c.sec ? c.sec.charAt(0)+c.sec.slice(1).toLowerCase() : null, c.cls!=='Residential'?c.cls:null, c.w?'Ward '+c.w+(MD.wards[c.w]?' · Councillor '+MD.wards[c.w]:''):null, c.pd?'Police District '+c.pd:null].filter(Boolean).join(' · ')})));
     if(s){
       const gap=s.v[KI.report_gap_pct];
-      const g = gap==null?null: gap<-25?['lo','Reports much less than similar communities']: gap<-10?['lo','Reports less than similar communities']: gap>10?['ok','Reports more than similar communities']:['ok','Reports about as expected'];
-      if(g) P.append(el('div',{class:'chips'}, el('span',{class:'pill '+g[0],text:g[1]+' ('+show('report_gap_pct',gap)+')'}), s.g?el('span',{class:'pill',text:'Grown a lot since 2021'}):null));
+      const g = s.g?['','Reporting gap not reliable: grown about '+fmt(s.g,1)+'× since 2021']: gap==null?null: gap<-25?['lo','Reports much less than similar communities']: gap<-10?['lo','Reports less than similar communities']: gap>10?['ok','Reports more than similar communities']:['ok','Reports about as expected'];
+      if(g) P.append(el('div',{class:'chips'}, el('span',{class:'pill '+g[0],text:g[1]+(gap==null?'':' ('+show('report_gap_pct',gap)+')')})));
+      if(s.g) P.append(el('p',{class:'note',text:'Rates per resident use 2021 population, so they are overstated here.'+(s.lo!=null?' Using today\'s properties instead, infrastructure reports are at least '+fmt(s.lo,0)+' per 1,000 residents a year, against '+fmt(s.v[KI.infra_rate],0)+' using 2021 population.':'')}));
       const F=(k,lab)=>el('div',null, el('b',{text:show(k,s.v[KI[k]])}), el('span',{text:lab}), el('span',{class:'cmp',text:'Calgary '+(k==='pop'?fmt(D.city.pop)+' avg':show(k,D.city[k]))}));
       P.append(el('h4',{text:'People'}), el('div',{class:'facts'}, F('pop','Residents (2021)'), F('income','Median income (area)'), F('noeng','No English (area)'), F('newcomer','Recent newcomers (area)'), F('renter','Renters (area)'), F('med_home_value','Median home value')));
       const total = c.q ? c.q[0] : null;

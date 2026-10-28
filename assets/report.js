@@ -1,5 +1,5 @@
 (async function(){
-  const D = await (await fetch('assets/data.json?v=cde582a8')).json(), R = D.R;
+  const D = await (await fetch('assets/data.json?v=74a64fda')).json(), R = D.R;
   const $ = s => document.querySelector(s);
   const el = (t,a,...k)=>{const n=document.createElement(t); if(a) for(const x in a){ if(x==='class') n.className=a[x]; else if(x==='text') n.textContent=a[x]; else if(x==='style') n.style.cssText=a[x]; else n.setAttribute(x,a[x]); } for(const c of k){ if(c==null) continue; n.append(c.nodeType?c:document.createTextNode(c)); } return n; };
   const fmt = (n,d=0) => n==null ? '–' : Number(n).toLocaleString('en-CA',{minimumFractionDigits:d,maximumFractionDigits:d});
@@ -38,14 +38,15 @@
     const card=$('#card'); card.textContent='';
     if(!c){ card.append(el('p',{class:'note',text:'Pick a community to see its full profile.'})); return; }
     const gap = c.v[KI.report_gap_pct];
-    const gapTxt = gap==null ? null : gap < -25 ? ['lo','Reports much less than similar communities'] : gap < -10 ? ['lo','Reports less than similar communities'] : gap > 10 ? ['ok','Reports more than similar communities'] : ['ok','Reports about as expected'];
-    card.append(el('h3',{text:c.n}), el('div',{class:'chips'}, el('span',{class:'pill',text:c.q+' Calgary'}), c.b?el('span',{class:'pill',text:'First reached 500 residents: '+(c.b===1968?'1968 or earlier':c.b)}):null, gapTxt?el('span',{class:'pill '+gapTxt[0],text:gapTxt[1]}):null, c.g?el('span',{class:'pill',text:'Residential properties now '+c.g+'× its 2021 households: per-resident rates may be overstated'}):null));
+    const gapTxt = c.g ? ['','Reporting gap not reliable here'] : gap==null ? null : gap < -25 ? ['lo','Reports much less than similar communities'] : gap < -10 ? ['lo','Reports less than similar communities'] : gap > 10 ? ['ok','Reports more than similar communities'] : ['ok','Reports about as expected'];
+    card.append(el('h3',{text:c.n}), el('div',{class:'chips'}, el('span',{class:'pill',text:c.q+' Calgary'}), c.b?el('span',{class:'pill',text:'First reached 500 residents: '+(c.b===1968?'1968 or earlier':c.b)}):null, gapTxt?el('span',{class:'pill '+gapTxt[0],text:gapTxt[1]}):null));
+    if(c.g){ const hi=c.v[KI.infra_rate]; card.append(el('p',{class:'note'}, el('b',{text:'Grown a lot since 2021. '}), 'This community now has about '+fmt(c.g,1)+' times as many residential properties as it had households in 2021, but the latest population count by community is from the 2021 Census. Its per-resident rates are therefore overstated, and its reporting gap is not shown. Infrastructure reports are about '+fmt(hi,0)+' per 1,000 residents a year using 2021 population'+(c.lo!=null?', and about '+fmt(c.lo,0)+' using today\'s properties (a low estimate, because some properties are empty lots). The true figure is somewhere between the two.':'.'))); }
     if(c.top.length) card.append(el('p',null, el('b',{text:'Most reported here: '}), c.top.map(t=>t[0]+' ('+fmt(t[1])+')').join(', ')));
     if(c.ind) card.append(el('p',{class:'note',text:'Largest industry: '+c.ind+'. Most common occupation group: '+c.occ+' (2021 Census).'}));
     groups.forEach(g=>{
       const box=el('div',{class:'grp'}, el('h4',{text:g}), el('div',{class:'ind head'}, el('span',{text:'Indicator'}), el('span',{class:'v',text:c.n.length>12?'Community':c.n}), el('span',{class:'c',text:'Calgary'}), el('span',{class:'p',text:'Rank'})));
       IND.forEach((x,i)=>{ if(x.g!==g) return; const v=c.v[i]; const r=rank(i,v); const pb=el('div',{class:'pbar'}); if(r!=null) pb.append(el('i',{style:'left:'+(r*100)+'%'}));
-        box.append(el('div',{class:'ind',title:x.l+' · source: '+x.s}, el('span',null, x.l, el('small',{text:x.s})), el('span',{class:'v',text:show(x,v)}), el('span',{class:'c',text: x.k==='pop'?fmt(D.city.pop)+' (avg community)':show(x,D.city[x.k])}), el('span',{class:'p'},pb))); });
+        box.append(el('div',{class:'ind',title:x.l+' · source: '+x.s}, el('span',null, x.l, el('small',{text:x.s})), el('span',{class:'v',text:(c.g&&x.k==='report_gap_pct')?'Not reliable':(c.g&&x.k==='infra_rate'&&c.lo!=null)?fmt(c.lo,0)+'–'+fmt(v,0):show(x,v)}), el('span',{class:'c',text: x.k==='pop'?fmt(D.city.pop)+' (avg community)':show(x,D.city[x.k])}), el('span',{class:'p'},pb))); });
       card.append(box);
     });
     card.append(el('p',{class:'note',text:'Indicators marked "area" come from the Calgary Equity Index, measured for areas that group several neighbouring communities, so nearby communities share values. Years vary from 2014 to 2026 as shown.'}));
@@ -69,7 +70,7 @@
     const tb=el('tbody');
     D.comms.filter(c=>!filt || c.n.toLowerCase().includes(filt) || c.q.toLowerCase()===filt)
       .sort((a,b)=>{ const x=val(a,sortK), y=val(b,sortK); if(x==null) return 1; if(y==null) return -1; return (typeof x==='string'? x.localeCompare(y) : x-y)*dir; })
-      .forEach(c=>{ const tr=el('tr'); cols.forEach(([k])=>{ const v=val(c,k); const x=IND[KI[k]]; tr.append(el('td',{class:(k!=='n'&&k!=='q')?'num':'',text: k==='n'||k==='q' ? v : show(x,v)})); }); tr.style.cursor='pointer'; tr.onclick=()=>{ $('#cq').value=c.n; profile(c); $('#cq').scrollIntoView({behavior:'smooth',block:'center'}); }; tb.append(tr); });
+      .forEach(c=>{ const tr=el('tr'); cols.forEach(([k])=>{ const v=val(c,k); const x=IND[KI[k]]; tr.append(el('td',{class:(k!=='n'&&k!=='q')?'num':'',text: k==='n'||k==='q' ? v : (c.g&&k==='report_gap_pct') ? 'Not reliable' : show(x,v)})); }); tr.style.cursor='pointer'; tr.onclick=()=>{ $('#cq').value=c.n; profile(c); $('#cq').scrollIntoView({behavior:'smooth',block:'center'}); }; tb.append(tr); });
     t.append(tb);
   }
   $('#tq').addEventListener('input', e=>{ filt=e.target.value.trim().toLowerCase(); table(); });
