@@ -1,7 +1,7 @@
 // ---------- Community map ----------
 (async function(){
   if(!window.L){ const m=document.getElementById('map'); if(m) m.textContent='The map library could not load. Check your connection and reload the page.'; return; }
-  const [MD, D] = await Promise.all([fetch('assets/mapdata.json?v=79d518e9').then(r=>r.json()), fetch('assets/data.json?v=74a64fda').then(r=>r.json())]);
+  const [MD, D] = await Promise.all([fetch('assets/mapdata.json?v=79d518e9').then(r=>r.json()), fetch('assets/data.json?v=45c384cf').then(r=>r.json())]);
   const IND = D.ind, KI = Object.fromEntries(IND.map((x,i)=>[x.k,i]));
   const SC = Object.fromEntries(D.comms.map(c=>[c.c,c]));      // study communities by code
   const $ = s => document.querySelector(s);
@@ -66,7 +66,8 @@
   function styleAll(){
     palette();
     const line = css('--bound'), wc = css('--water'), rc = css('--road'), rc2 = css('--road2');
-    MD.comms.forEach(c=>layers[c.c].setStyle({fillColor:color(c.c), color:line, opacity:1}));
+    MD.comms.forEach(c=>layers[c.c].setStyle({fillColor:color(c.c), color:line, opacity:1, fillOpacity:(ward && c.w!==ward)?0.22:0.88}));
+    drawWard();
     water.eachLayer(l=>l.setStyle({fillColor:wc}));
     styleRoads(rc, rc2);
     if(cur) highlight(cur);
@@ -133,12 +134,76 @@
     $('#ms').value=c.n;
   }
 
+  // ----- ward filter -----
+  let ward = null; const W = D.wards || {}, WC = D.wcity || {};
+  const wardLayer = L.layerGroup().addTo(map);
+  function wardLines(w){
+    const cnt=new Map(), seg=new Map(), key=p=>p[0].toFixed(6)+','+p[1].toFixed(6);
+    MD.comms.filter(c=>c.w===w).forEach(c=>c.g.forEach(poly=>poly.forEach(r=>{ const pts=ring(r,MD.s);
+      for(let i=0;i<pts.length;i++){ const a=pts[i], b=pts[(i+1)%pts.length], ka=key(a), kb=key(b); if(ka===kb) continue; const k=ka<kb?ka+'|'+kb:kb+'|'+ka; cnt.set(k,(cnt.get(k)||0)+1); seg.set(k,[a,b]); } })));
+    const out=[]; cnt.forEach((n,k)=>{ if(n===1) out.push(seg.get(k)); }); return out;
+  }
+  const WL = {};
+  function drawWard(){ wardLayer.clearLayers(); if(!ward) return; WL[ward] = WL[ward] || wardLines(ward);
+    L.polyline(WL[ward],{pane:'sel',interactive:false,color:css('--ink'),weight:2.6,opacity:0.95}).addTo(wardLayer); }
+  function wardBounds(w){ let b=null; MD.comms.filter(c=>c.w===w).forEach(c=>{ const lb=layers[c.c].getBounds(); b=b?b.extend(lb):L.latLngBounds(lb.getSouthWest(),lb.getNorthEast()); }); return b; }
+  const ord = n => n+(['th','st','nd','rd'][(n%100-20)%10]||['th','st','nd','rd'][n%100]||'th');
+  const gapLabel = g => g<-25?['lo','Reports much less than similar communities']: g<-10?['lo','Reports less than similar communities']: g>10?['ok','Reports more than similar communities']:['ok','Reports about as expected'];
+  function wardPanel(w){
+    const x=W[w]; P.textContent='';
+    const nW = Object.keys(W).length;
+    P.append(el('div',{class:'stack',style:'gap:6px'}, el('h3',{text:'Ward '+w}),
+      el('div',{class:'sub',text:[x.name?'Councillor '+x.name:null, x.n+' communities in the study'].filter(Boolean).join(' · ')})));
+    const g=gapLabel(x.gap);
+    P.append(el('div',{class:'chips'}, el('span',{class:'pill '+g[0],text:g[1]+' ('+show('report_gap_pct',x.gap)+')'})));
+    P.append(el('p',{class:'sub',text:'Infrastructure reports per resident: '+(x.rk_infra_rate===1?'the lowest':ord(x.rk_infra_rate)+' lowest')+' of '+nW+' wards. Reports compared with similar communities: '+(x.rk_gap===1?'the lowest':ord(x.rk_gap)+' lowest')+' of '+nW+'.'}));
+    const np_=el('p',{class:'note',text:'Ward figures use population adjusted for homes built since the 2021 Census: about '+fmt(Math.round(x.pop_r/100)*100)+' residents during the study, against '+fmt(x.pop)+' in 2021.'+(w==='5'?' ':'')});
+    if(w==='5') np_.append(el('a',{href:'ward5.html',text:'How Ward 5 was adjusted →'}));
+    P.append(np_);
+    const Fw=(v,lab,cmp)=>el('div',null, el('b',{text:v}), el('span',{text:lab}), el('span',{class:'cmp',text:cmp}));
+    const pct=v=>fmt(v,1)+'%';
+    P.append(el('h4',{text:'People'}), el('div',{class:'facts'},
+      Fw(fmt(Math.round(x.pop_r/100)*100),'Residents during the study (estimated)',fmt(x.pop)+' in the 2021 Census'),
+      Fw('$'+fmt(x.income),'Median income (area, average)','Calgary $'+fmt(WC.income)),
+      Fw(pct(x.noeng),'No English (area)','Calgary '+pct(WC.noeng)),
+      Fw(pct(x.newcomer),'Recent newcomers (area)','Calgary '+pct(WC.newcomer)),
+      Fw(fmt(x.renter,0)+'%','Renters (area)','Calgary '+fmt(WC.renter,0)+'%'),
+      Fw(fmt(x.units),'New homes in building permits','Oct 2024 – Sep 2026')));
+    P.append(el('h4',{text:'311 requests, Oct 2024 – Sep 2026'}), el('div',{class:'facts'},
+      Fw(fmt(x.req),'Requests in two years','excluding duplicates'),
+      Fw(fmt(x.all_rate,0),'Requests per 1,000 a year','Calgary '+fmt(WC.all_rate,0)),
+      Fw(fmt(x.infra_rate,1),'Infrastructure reports per 1,000 a year','Calgary '+fmt(WC.infra_rate,1)),
+      Fw(fmt(x.expected,1),'Expected for communities like these','based on income, renters, age, distance'),
+      Fw(pct(x.app),'Made through the 311 app','Calgary '+pct(WC.app)),
+      Fw(pct(x.close7),'Closed within 7 days','Calgary '+pct(WC.close7))));
+    const ul=el('ul',{class:'mlist'});
+    x.comms.forEach(([code,gp,pm])=>{ const c=SC[code]; if(!c) return; const b=el('button',{class:'lnk',type:'button',text:c.n}); b.onclick=()=>select(code,true);
+      ul.append(el('li',null, el('span',null,b, el('br'), el('span',{class:'sub',text:'about '+fmt(Math.round(pm/100)*100)+' residents during the study'})), el('span',{class:'d',text: gp==null?'–':show('report_gap_pct',gp)}))); });
+    P.append(el('h4',{text:'Communities: reports vs similar communities'}), ul);
+    const rows=el('ul',{class:'wrows'}); const mx=Math.max(...Object.values(W).map(v=>Math.abs(v.gap)),10);
+    Object.keys(W).sort((a,b)=>W[a].gap-W[b].gap).forEach(k=>{ const v=W[k].gap, wd=Math.abs(v)/mx*50; const tr=el('span',{class:'tr'}, el('b'), el('i',{style:'left:'+(v<0?50-wd:50)+'%;width:'+wd+'%;background:'+(v<0?css('--g1'):css('--g5'))}));
+      rows.append(el('li',{class:'wrow'+(k===w?' on':'')}, el('span',{text:'Ward '+k}), tr, el('span',{class:'n',text:show('report_gap_pct',v)}))); });
+    P.append(el('h4',{text:'All wards: reports vs similar communities'}), rows, el('p',{class:'sub',text:'Pooled over each ward\'s study communities, with population adjusted for homes built since 2021. Each community counts in the ward where most of its area lies.'}));
+    P.append(phones()); P.scrollTop=0;
+  }
+  const wsel=$('#mw'); wsel.append(el('option',{value:'',text:'All of Calgary'}));
+  Object.keys(W).sort((a,b)=>a-b).forEach(w=>wsel.append(el('option',{value:w,text:'Ward '+w+(W[w].name?' · '+W[w].name:'')})));
+  function setWard(w, fly){
+    ward = w || null; wsel.value = ward || '';
+    if(cur && layers[cur]) layers[cur].setStyle({weight:0.7}); cur=null; selLayer.clearLayers(); $('#ms').value='';
+    styleAll();
+    if(ward){ wardPanel(ward); if(fly!==false) map.flyToBounds(wardBounds(ward),{padding:[30,30],duration:0.6}); }
+    else { P.textContent=''; P.append(el('div',{class:'stack',style:'gap:8px'}, el('h3',{text:'Pick a community'}), el('p',{class:'sub',text:'Click any community on the map, or search above, to see its people, 311 requests, councillor, nearest fire station, hospital, library and community hall.'})), phones()); if(fly!==false) map.flyToBounds(B,{padding:[8,8],duration:0.6}); }
+  }
+  wsel.addEventListener('change',()=>setWard(wsel.value));
+
   // ----- side panel -----
   const P = $('#mpanel');
   function hover(c){ const h=$('#mhover'); if(h) h.textContent = c ? c.n + (SC[c.c] ? ' · ' + ((metric.k==='report_gap_pct'&&SC[c.c].g) ? 'gap not reliable (grown since 2021)' : show(metric.k, val(c.c,metric.k))) : ' · not in study') : 'Hover or tap a community'; }
   function km(d){ return d<1 ? fmt(d*1000,0)+' m' : fmt(d,1)+' km'; }
   function panel(code){
     const c=commByCode[code], s=SC[code]; P.textContent='';
+    if(ward){ const bk=el('button',{class:'mbtn back',type:'button',text:'← Ward '+ward+' summary'}); bk.onclick=()=>setWard(ward,false); P.append(bk); }
     P.append(el('div',{class:'stack',style:'gap:6px'},
       el('h3',{text:c.n}),
       el('div',{class:'sub',text:[c.sec ? c.sec.charAt(0)+c.sec.slice(1).toLowerCase() : null, c.cls!=='Residential'?c.cls:null, c.w?'Ward '+c.w+(MD.wards[c.w]?' · Councillor '+MD.wards[c.w]:''):null, c.pd?'Police District '+c.pd:null].filter(Boolean).join(' · ')})));
@@ -146,7 +211,7 @@
       const gap=s.v[KI.report_gap_pct];
       const g = s.g?['','Reporting gap not reliable: grown about '+fmt(s.g,1)+'× since 2021']: gap==null?null: gap<-25?['lo','Reports much less than similar communities']: gap<-10?['lo','Reports less than similar communities']: gap>10?['ok','Reports more than similar communities']:['ok','Reports about as expected'];
       if(g) P.append(el('div',{class:'chips'}, el('span',{class:'pill '+g[0],text:g[1]+(gap==null?'':' ('+show('report_gap_pct',gap)+')')})));
-      if(s.g) P.append(el('p',{class:'note',text:'Rates per resident use 2021 population, so they are overstated here.'+(s.lo!=null?' Using today\'s properties instead, infrastructure reports are at least '+fmt(s.lo,0)+' per 1,000 residents a year, against '+fmt(s.v[KI.infra_rate],0)+' using 2021 population.':'')}));
+      if(s.a) P.append(el('p',{class:'note',text:(s.g?'Grown a lot since 2021, so rates per resident using 2021 population are overstated here.':'Grown about '+Math.round((s.a.hg-1)*100)+'% since 2021.')+' Adjusted for growth, infrastructure reports are about '+fmt(s.a.rate,1)+' per 1,000 residents a year'+(s.a.gap!=null?' ('+show('report_gap_pct',s.a.gap)+' vs similar communities)':'')+'.'})); if(s.a && s.w==='5') P.append(el('p',{class:'note'}, el('a',{href:'ward5.html',text:'How Ward 5 was adjusted for growth →'})));
       const F=(k,lab)=>el('div',null, el('b',{text:show(k,s.v[KI[k]])}), el('span',{text:lab}), el('span',{class:'cmp',text:'Calgary '+(k==='pop'?fmt(D.city.pop)+' avg':show(k,D.city[k]))}));
       P.append(el('h4',{text:'People'}), el('div',{class:'facts'}, F('pop','Residents (2021)'), F('income','Median income (area)'), F('noeng','No English (area)'), F('newcomer','Recent newcomers (area)'), F('renter','Renters (area)'), F('med_home_value','Median home value')));
       const total = c.q ? c.q[0] : null;

@@ -15,19 +15,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="assets/style.css?v=a2751942">
+<link rel="stylesheet" href="assets/style.css?v=b718703b">
 </head>
 <body>
-<nav class="nav" aria-label="Site"><div class="in"><a class="brand" href="index.html">Who Calgary's 311 Hears</a><ul><li><a class="lk" href="index.html">Overview</a></li><li><a class="lk" href="map.html" aria-current="page">Map</a></li><li><a class="lk" href="findings.html">Findings</a></li><li><a class="lk" href="recommendations.html">Recommendations</a></li><li><a class="lk" href="communities.html">Communities</a></li><li><a class="lk" href="method.html">Method & data</a></li></ul></div></nav>
+<nav class="nav" aria-label="Site"><div class="in"><a class="brand" href="index.html">Who Calgary's 311 Hears</a><ul><li><a class="lk" href="index.html">Overview</a></li><li><a class="lk" href="map.html" aria-current="page">Map</a></li><li><a class="lk" href="findings.html">Findings</a></li><li><a class="lk" href="recommendations.html">Recommendations</a></li><li><a class="lk" href="communities.html">Communities</a></li><li><a class="lk" href="ward5.html">Ward 5</a></li><li><a class="lk" href="method.html">Method & data</a></li></ul></div></nav>
 <main>
 <section class="mapsec full" id="map-section" aria-labelledby="map-h">
   <div class="intro">
     <span class="label">Explore</span>
     <h1 id="map-h" style="font-size:clamp(1.8rem,5vw,2.4rem)">Map of Calgary's communities</h1>
-    <p>Every community, drawn from the City's official boundaries. Colour the map by any measure, then click a community for its people, 311 requests, councillor, nearest fire station, hospital and library, and the city's emergency and help lines.</p>
+    <p>Every community, drawn from the City's official boundaries. Colour the map by any measure, pick a ward to see its combined figures, or click a community for its people, 311 requests, councillor, nearest fire station, hospital and library, and the city's emergency and help lines.</p>
   </div>
   <div class="mapbar">
     <label for="mm">Colour by</label><select id="mm"></select>
+    <label for="mw">Ward</label><select id="mw"></select>
     <label for="ms" hidden>Find a community</label><input id="ms" list="mlist" placeholder="Find a community, e.g. Forest Lawn" autocomplete="off">
     <datalist id="mlist"></datalist>
     <label class="basemap"><input type="checkbox" id="streets" checked> Show streets</label>
@@ -46,6 +47,6 @@
 </div></footer>
 <div class="toast" id="toast" role="status" hidden></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
-<script src="assets/map.js?v=860f5aee"></script>
+<script src="assets/map.js?v=cb934f17"></script>
 </body>
 </html>

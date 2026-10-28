@@ -4,7 +4,7 @@ An independent study of equity in Calgary 311 reporting and response, using City
 
 Live site: https://hassanaliarshad110.github.io/calgary-311/
 
-- `index.html` overview, `findings.html`, `map.html` (community map), `communities.html` (profiles and table), `method.html` (method and downloads)
+- `index.html` overview, `findings.html`, `map.html` (community map), `communities.html` (profiles and table), `ward5.html` (Ward 5, adjusted for growth), `method.html` (method and downloads)
 - `downloads/` methodology PDF, community indicators CSV, and the full study package with source data and code
 
 Data: City of Calgary Open Data, Open Government Licence – City of Calgary. Basemap: Esri World Gray Canvas (© Esri, HERE, Garmin, © OpenStreetMap contributors).
