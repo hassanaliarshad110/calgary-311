@@ -97,6 +97,14 @@ th.sort[aria-sort="ascending"]::after{content:" ▲"} th.sort[aria-sort="descend
 .pbar{height:6px;background:var(--grid);border-radius:3px;position:relative}
 .pbar i{position:absolute;top:-3px;width:4px;height:12px;border-radius:2px;background:var(--mark);margin-left:-2px}
 .ind small{color:var(--muted);font-size:.74rem;display:block}
+.peerlist{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column}
+.peerlist li{display:grid;grid-template-columns:minmax(0,1fr) 4.6rem 5.6rem;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--grid);font-size:.9rem}
+.peerlist .sim{font-family:var(--f-mono);font-size:.82rem;text-align:right;color:var(--accent);font-weight:600}
+.peerlist .rt{font-family:var(--f-mono);font-size:.82rem;text-align:right;color:var(--muted)}
+.peerlist li.hd{font-size:.74rem;color:var(--muted);font-weight:600;padding-top:0}
+.peerlist li.hd span{font-family:inherit;color:var(--muted);font-weight:600;font-size:.74rem}
+.peerlist button.lnk,.card button.lnk{all:unset;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.peerlist button.lnk:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 .recs{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:10px;max-width:68ch}
 .limits{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:.95rem;max-width:68ch}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:.9rem;z-index:20}
@@ -262,6 +270,7 @@ section[id^="g"],#points,#pilot{scroll-margin-top:84px}
 .w5 .key{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
 .w5 td .ar{color:var(--muted)}
 .w5 th{white-space:normal;vertical-align:bottom;min-width:5.5rem}
+.w5 .peertbl td:nth-child(2){white-space:normal;min-width:16rem;font-size:.86rem}
 .w5 table{min-width:0}
 .w5 table td.hl{font-weight:700}
 .w5 .steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px;max-width:70ch}

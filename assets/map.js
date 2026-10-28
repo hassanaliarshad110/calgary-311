@@ -1,7 +1,7 @@
 // ---------- Community map ----------
 (async function(){
   if(!window.L){ const m=document.getElementById('map'); if(m) m.textContent='The map library could not load. Check your connection and reload the page.'; return; }
-  const [MD, D] = await Promise.all([fetch('assets/mapdata.json?v=79d518e9').then(r=>r.json()), fetch('assets/data.json?v=45c384cf').then(r=>r.json())]);
+  const [MD, D] = await Promise.all([fetch('assets/mapdata.json?v=79d518e9').then(r=>r.json()), fetch('assets/data.json?v=6580a389').then(r=>r.json())]);
   const IND = D.ind, KI = Object.fromEntries(IND.map((x,i)=>[x.k,i]));
   const SC = Object.fromEntries(D.comms.map(c=>[c.c,c]));      // study communities by code
   const $ = s => document.querySelector(s);
@@ -219,6 +219,9 @@
         el('div',null, el('b',{text:fmt(total)}), el('span',{text:'Requests in two years'}), el('span',{class:'cmp',text:'excluding duplicates'})),
         F('all_rate','Requests per 1,000 a year'), F('infra_rate','Infrastructure reports per 1,000 a year'), F('expected_rate','Expected for a community like this'), F('app_share','Made through the 311 app'), F('close7_pct','Closed within 7 days')));
       if(s.top && s.top.length) P.append(el('p',{class:'sub'}, el('b',{text:'Most reported: '}), s.top.map(t=>t[0]+' ('+fmt(t[1])+')').join(', ')));
+      if(s.s){ const ul=el('ul',{class:'mlist'}); s.s.p.forEach(([code,sim,rate])=>{ const o=SC[code]; if(!o) return; const b=el('button',{class:'lnk',type:'button',text:o.n}); b.onclick=()=>select(code,true);
+          ul.append(el('li',null, el('span',null,b, el('br'), el('span',{class:'sub',text:fmt(rate,1)+' reports per 1,000'})), el('span',{class:'d',text:'similarity '+sim}))); });
+        P.append(el('h4',{text:'Most similar communities'}), ul, el('p',{class:'sub',text:'Closest on income, renters, distance from downtown and community age. Reports adjusted for growth: '+c.n+' '+fmt(s.s.own,1)+', these five '+fmt(s.s.avg,1)+' on average.'})); }
     } else {
       P.append(el('p',{class:'sub',text: c.cls!=='Residential' ? 'This is a '+c.cls.toLowerCase()+' area, so it is not part of the study.' : 'This community had fewer than 500 residents in the 2021 Census, or was built after it, so it is not part of the study.'}));
       if(c.q && c.q[0]) P.append(el('div',{class:'facts'}, el('div',null, el('b',{text:fmt(c.q[0])}), el('span',{text:'311 requests, Oct 2024 – Sep 2026'})), el('div',null, el('b',{text:c.q[0]?fmt(c.q[1]/c.q[0]*100,0)+'%':'–'}), el('span',{text:'Made through the 311 app'}))));

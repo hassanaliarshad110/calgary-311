@@ -1,5 +1,5 @@
 (async function(){
-  const D = await (await fetch('assets/data.json?v=45c384cf')).json(), R = D.R;
+  const D = await (await fetch('assets/data.json?v=6580a389')).json(), R = D.R;
   const $ = s => document.querySelector(s);
   const el = (t,a,...k)=>{const n=document.createElement(t); if(a) for(const x in a){ if(x==='class') n.className=a[x]; else if(x==='text') n.textContent=a[x]; else if(x==='style') n.style.cssText=a[x]; else n.setAttribute(x,a[x]); } for(const c of k){ if(c==null) continue; n.append(c.nodeType?c:document.createTextNode(c)); } return n; };
   const fmt = (n,d=0) => n==null ? '–' : Number(n).toLocaleString('en-CA',{minimumFractionDigits:d,maximumFractionDigits:d});
@@ -45,6 +45,13 @@
       else card.append(el('p',{class:'note'}, el('b',{text:'Grown since 2021. '}), 'This community has about '+Math.round((a.hg-1)*100)+'% more homes lived in than on Census day 2021, so its per-resident rates are somewhat overstated.'+adjTxt));
       if(c.w==='5') card.append(el('p',{class:'note'}, el('a',{href:'ward5.html',text:'How Ward 5 was adjusted for growth →'}))); }
     if(c.top.length) card.append(el('p',null, el('b',{text:'Most reported here: '}), c.top.map(t=>t[0]+' ('+fmt(t[1])+')').join(', ')));
+    if(c.s){ const SCD=Object.fromEntries(D.comms.map(x=>[x.c,x])); const box=el('div',{class:'grp peers'}, el('h4',{text:'Most similar communities'}));
+      const ul=el('ul',{class:'peerlist'}, el('li',{class:'hd'}, el('span',{text:'Community'}), el('span',{class:'sim',text:'Similarity'}), el('span',{class:'rt',text:'Reports per 1,000'})));
+      c.s.p.forEach(([code,sim,rate])=>{ const o=SCD[code]; if(!o) return; const b=el('button',{type:'button',class:'lnk',text:o.n}); b.onclick=()=>{ $('#cq').value=o.n; profile(o); $('#cq').scrollIntoView({behavior:'smooth',block:'center'}); };
+        ul.append(el('li',null, b, el('span',{class:'sim',title:'Similarity, 0 to 100',text:String(sim)}), el('span',{class:'rt',text:fmt(rate,1)}))); });
+      const diff=Math.round((c.s.own/c.s.avg-1)*100);
+      box.append(ul, el('p',{class:'note',text:'Similarity (0–100, 100 = identical) compares median income, share of renters, distance from downtown and community age: the same four factors behind "expected". Reports are infrastructure reports per 1,000 residents a year, adjusted for growth since 2021. '+c.n+': '+fmt(c.s.own,1)+', against '+fmt(c.s.avg,1)+' on average for these five ('+(diff===0?'about the same':(diff>0?'+':'−')+Math.abs(diff)+'%')+').'}));
+      card.append(box); }
     if(c.ind) card.append(el('p',{class:'note',text:'Largest industry: '+c.ind+'. Most common occupation group: '+c.occ+' (2021 Census).'}));
     groups.forEach(g=>{
       const box=el('div',{class:'grp'}, el('h4',{text:g}), el('div',{class:'ind head'}, el('span',{text:'Indicator'}), el('span',{class:'v',text:c.n.length>12?'Community':c.n}), el('span',{class:'c',text:'Calgary'}), el('span',{class:'p',text:'Rank'})));
