@@ -39,8 +39,20 @@
       <a href="downloads/Who-Calgarys-311-Hears_Report-to-the-City.pdf" download><b>Report to The City of Calgary (PDF)</b><span class="sz">17 KB</span><small>Findings, where the gap is concentrated, 12 recommendations including reporting incentives, and a 12-month pilot.</small></a>
       <a href="downloads/Who-Calgarys-311-Hears_Methodology.pdf" download><b>Methodology and results (PDF)</b><span class="sz">27 KB</span><small>Purpose, data sources, definitions, every model result, data checks and limitations.</small></a>
       <a href="downloads/calgary-311-community-indicators.csv" download><b>Community indicators (CSV)</b><span class="sz">80 KB</span><small>195 communities × 52 indicators, the same data as the profiles.</small></a>
-      <a href="downloads/Calgary-311-Study.zip" download><b>Full study package (ZIP)</b><span class="sz">1.1 MB</span><small>Every source extract with its query, the analysis code that reproduces every figure, and map data.</small></a>
+      <a href="downloads/Calgary-311-Study.zip" download><b>Full study package (ZIP)</b><span class="sz">1.1 MB</span><small>Every source extract with its query, scripts to download it all again from City of Calgary Open Data, the analysis code that reproduces every figure, and map data.</small></a>
     </div>
+  </section>
+  <section class="stack">
+    <h2>Re-run the study yourself</h2>
+    <p style="max-width:68ch">Anyone can rebuild the study from City of Calgary Open Data in about 15 minutes. You need Python 3.10 or newer and an internet connection. Unzip the full study package, open a terminal in its folder and run (on Windows, type <code>py</code> instead of <code>python</code>):</p>
+    <ol class="limits">
+      <li><code>python -m pip install pandas numpy</code> (once per computer)</li>
+      <li><code>python download_data.py</code> downloads all 16 source extracts from Open Data (about a minute)</li>
+      <li><code>python build_inputs.py</code> prepares them for the analysis</li>
+      <li><code>cd 02_Analysis</code>, then <code>python reanalyze.py</code> runs the analysis (2 to 3 minutes), then <code>cd ..</code></li>
+      <li><code>python check_results.py</code> compares your results with the published ones</li>
+    </ol>
+    <p style="max-width:68ch">Skip step 2 to reproduce the published figures exactly from the extracts in the package (downloaded October 20–21, 2026). A fresh download gives the same findings, with small differences in counts because Open Data is live: requests are closed, re-coded or merged as duplicates after the fact. Checked on October 31, 2026, every finding was identical, with 809,532 requests instead of 809,528. Full instructions are in the package's README.txt.</p>
   </section>
   <section class="stack">
     <h2>About this study</h2>
