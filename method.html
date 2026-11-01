@@ -40,11 +40,13 @@
       <a href="downloads/Who-Calgarys-311-Hears_Methodology.pdf" download><b>Methodology and results (PDF)</b><span class="sz">27 KB</span><small>Purpose, data sources, definitions, every model result, data checks and limitations.</small></a>
       <a href="downloads/calgary-311-community-indicators.csv" download><b>Community indicators (CSV)</b><span class="sz">80 KB</span><small>195 communities × 52 indicators, the same data as the profiles.</small></a>
       <a href="downloads/Calgary-311-Study.zip" download><b>Full study package (ZIP)</b><span class="sz">1.1 MB</span><small>Every source extract with its query, scripts to download it all again from City of Calgary Open Data, the analysis code that reproduces every figure, and map data.</small></a>
+      <a href="downloads/who_calgarys_311_hears.py" download><b>The study in one Python script (PY)</b><span class="sz">13 KB</span><small>A single, commented file that downloads the data from City of Calgary Open Data and works out the main results step by step, next to the published figures.</small></a>
     </div>
   </section>
   <section class="stack">
     <h2>Re-run the study yourself</h2>
-    <p style="max-width:68ch">Anyone can rebuild the study from City of Calgary Open Data in about 15 minutes. You need Python 3.10 or newer and an internet connection. Unzip the full study package, open a terminal in its folder and run (on Windows, type <code>py</code> instead of <code>python</code>):</p>
+    <p style="max-width:68ch"><b>Quickest check (about 2 minutes):</b> download <a href="downloads/who_calgarys_311_hears.py" download>the study in one Python script</a>, install Python 3 from <a href="https://www.python.org/downloads/" target="_blank" rel="noopener">python.org</a>, and run <code>python who_calgarys_311_hears.py</code> (on Windows, <code>py who_calgarys_311_hears.py</code>, or double-click it). It needs nothing else: it installs pandas and numpy if they are missing, downloads 8 data sets from Open Data, and prints the communities, the raw and adjusted reporting gaps, response speed and app use next to the published figures.</p>
+    <p style="max-width:68ch"><b>The full study (about 15 minutes),</b> with all 14 model versions and the bootstrap range: anyone can rebuild it from City of Calgary Open Data. You need Python 3.10 or newer and an internet connection. Unzip the full study package, open a terminal in its folder and run (on Windows, type <code>py</code> instead of <code>python</code>):</p>
     <ol class="limits">
       <li><code>python -m pip install pandas numpy</code> (once per computer)</li>
       <li><code>python download_data.py</code> downloads all 16 source extracts from Open Data (about a minute)</li>
