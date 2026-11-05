@@ -291,3 +291,7 @@ section[id^="g"],#points,#pilot{scroll-margin-top:84px}
 .w5 .box h3{margin:0;font-size:1.05rem}
 .w5 .box p{margin:0}
 @media (max-width:520px){ .w5 .div li{grid-template-columns:minmax(84px,7.2rem) 1fr 3.2rem;font-size:.84rem} }
+details{border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:var(--surface)}
+details summary{cursor:pointer;font-weight:700}
+details[open] summary{margin-bottom:8px}
+details p{margin:.5em 0}
